@@ -540,6 +540,32 @@
 
         footer { background-color: var(--dark-color); color: #fff; text-align: center; padding: 25px; font-size: 14px; border-top: 4px solid var(--primary-color); }
         @media (max-width: 480px) { .nav-container { flex-direction: column; gap: 10px; } .nav-menu { gap: 10px; } .nav-item { font-size: 14px; } .program-action-footer { flex-direction: column; gap: 10px; text-align: center; } .program-modal-box { height: 92vh; } }
+        
+        .instagram-follow-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        color: #ffffff;
+        padding: 10px 24px;
+        border-radius: 30px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        text-decoration: none;
+        margin-top: 15px;
+        box-shadow: 0 4px 15px rgba(220, 39, 67, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .instagram-follow-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(220, 39, 67, 0.5);
+        color: #ffffff;
+    }
+
+    .instagram-follow-btn i {
+        font-size: 1.2rem;
+    }
     </style>
 </head>
 <body id="accueil">
@@ -560,6 +586,9 @@
     <section class="hero">
         <h1>Costa Voyages ابحر في عالم من المغامرات مع </h1>
         <p>وجهات ساحرة وعروض حصرية مصممة خصيصاً لتصنع ذكريات لا تُنسى</p>
+        <a href="https://www.instagram.com/https://www.instagram.com/costavoyages/" target="_blank" class="instagram-follow-btn">
+            <i class="fa-brands fa-instagram"></i> Suivez-Nous
+        </a>
     </section>
 
     <section class="tours-section" id="destinations">
