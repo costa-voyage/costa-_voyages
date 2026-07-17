@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Costa Voyages | للسياحة والسفر</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -695,7 +695,7 @@
     </div>
 
     <section class="contact-section" id="contact-section">
-        <h3>هل لديك أي استفسار آخر؟</h3>
+        <h3>هل لديك أي استفسار آخر？</h3>
         <p>يسعدنا تواصلك معنا مباشرة للإجابة على جميع تساؤلاتك، اضغط على الزر أدناه للاتصال بنا هاتفياً.</p>
         <a href="tel:0555483824" class="contact-btn"><i class="fa-solid fa-phone"></i> اتصل بنا الآن هاتفياً</a>
     </section>
@@ -705,54 +705,76 @@
     </footer>
 
     <script>
+        // رابط Firebase السحابي الخاص بك جاهز ومفعل
+        const FIREBASE_URL = "https://costa-voyages-f3453-default-rtdb.europe-west1.firebasedatabase.app/";
+
         document.addEventListener('DOMContentLoaded', loadToursToHome);
 
         let allToursData = []; 
         let currentSlideIndex = 0;
 
-        function loadToursToHome() {
+        // 1. دالة جلب الرحلات ديناميكياً من Firebase
+        async function loadToursToHome() {
             const container = document.getElementById('tours-grid-new');
-            allToursData = JSON.parse(localStorage.getItem('tours')) || [];
+            if(!container) return;
 
-            if (allToursData.length === 0) {
-                container.innerHTML = '<p class="empty-message">العروض والرحلات الجديدة ستتوفر قريباً...</p>';
-                return;
+            try {
+                const res = await fetch(`${FIREBASE_URL}tours.json`);
+                const toursData = await res.json();
+
+                if (!toursData) {
+                    container.innerHTML = '<p class="empty-message">العروض والرحلات الجديدة ستتوفر قريباً...</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                allToursData = [];
+
+                // تحويل بيانات الكائنات القادمة من الفايربيز إلى مصفوفة لتسهيل إدارتها
+                Object.keys(toursData).forEach((key) => {
+                    const tour = toursData[key];
+                    tour.firebaseKey = key; // حفظ المفتاح الخاص بالرحلة
+                    allToursData.push(tour);
+                });
+
+                allToursData.forEach((tour, index) => {
+                    const tourDate = tour.date ? tour.date : 'غير محدد';
+                    const combinedInfo = `التاريخ: ${tourDate} | المدة: ${tour.duration || 'غير محددة'}`;
+
+                    const card = document.createElement('div');
+                    card.classList.add('tour-card-new');
+                    card.innerHTML = `
+                        <img class="tour-img-new" src="${tour.image || 'https://via.placeholder.com/280x200'}" alt="">
+                        <div class="tour-details-new">
+                            <div>
+                                <h3>${tour.title}</h3>
+                                <div class="tour-meta-new">
+                                    <span><i class="fa-solid fa-calendar-days"></i> الانطلاق: ${tourDate}</span>
+                                    <span><i class="fa-solid fa-clock"></i> ${tour.duration || ''}</span>
+                                </div>
+                                <p>${tour.desc ? tour.desc.split('\n')[0] : ''}</p>
+                            </div>
+                            <div class="tour-footer-new">
+                                <div class="tour-price-box">
+                                    <span class="tour-price-new">${tour.price}</span>
+                                </div>
+                                <div class="tour-action-btns">
+                                    <button onclick="openProgramModal(${index})" class="tour-btn-details">تفاصيل البرنامج</button>
+                                    <button onclick="openBookingModal('${tour.title}', '${combinedInfo}')" class="tour-btn-new">احجز الآن</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+            } catch(e) {
+                console.error("Error loading tours from Firebase:", e);
+                container.innerHTML = '<p class="empty-message">حدث خطأ أثناء تحميل الرحلات، يرجى تحديث الصفحة.</p>';
             }
-
-            container.innerHTML = '';
-
-            allToursData.forEach((tour, index) => {
-                const tourDate = tour.date ? tour.date : 'غير محدد';
-                const combinedInfo = `الانطلاق: ${tourDate} | ${tour.duration}`;
-
-                const card = document.createElement('div');
-                card.classList.add('tour-card-new');
-                card.innerHTML = `
-                    <img class="tour-img-new" src="${tour.image || 'https://via.placeholder.com/280x200'}" alt="">
-                    <div class="tour-details-new">
-                        <div>
-                            <h3>${tour.title}</h3>
-                            <div class="tour-meta-new">
-                                <span><i class="fa-solid fa-calendar-days"></i> الانطلاق: ${tourDate}</span>
-                                <span><i class="fa-solid fa-clock"></i> ${tour.duration}</span>
-                            </div>
-                            <p>${tour.desc ? tour.desc.split('\n')[0] : ''}</p>
-                        </div>
-                        <div class="tour-footer-new">
-                            <div class="tour-price-box">
-                                <span class="tour-price-new">${tour.price}</span>
-                            </div>
-                            <div class="tour-action-btns">
-                                <button onclick="openProgramModal(${index})" class="tour-btn-details">تفاصيل البرنامج</button>
-                                <button onclick="openBookingModal('${tour.title}', '${combinedInfo}')" class="tour-btn-new">احجز الآن</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
         }
 
+        // 2. فتح نافذة تفاصيل البرنامج ومعالجة البطاقات الذكية
         function openProgramModal(index) {
             const tour = allToursData[index];
             if (!tour) return;
@@ -761,7 +783,8 @@
             document.getElementById('program-modal-price').innerText = tour.price;
 
             const tourDate = tour.date ? tour.date : 'غير محدد';
-            const combinedInfo = `الانطلاق: ${tourDate} | ${tour.duration}`;
+            const combinedInfo = `التاريخ: ${tourDate} | المدة: ${tour.duration || 'غير محددة'}`;
+            
             document.getElementById('program-book-now-btn').onclick = function() {
                 closeProgramModal();
                 openBookingModal(tour.title, combinedInfo);
@@ -785,7 +808,7 @@
             bookingList.innerHTML = '';
             rulesList.innerHTML = '';
 
-            // بناء السلايدر الخاص بالصور الإضافية للرحلة إذا وجدت
+            // بناء سلايدر الصور السحابية
             const wrapper = document.getElementById('modal-slider-wrapper');
             const dotsContainer = document.getElementById('modal-slider-dots');
             wrapper.innerHTML = '';
@@ -808,7 +831,7 @@
                 dotsContainer.appendChild(dot);
             });
 
-            // معالجة النصوص وتقسيمها على البطاقات الثمانية المخصصة
+            // معالجة النصوص وتقسيمها بذكاء على التبويبات الثمانية
             if (tour.desc) {
                 const lines = tour.desc.split('\n');
                 let currentSection = 'intro';
@@ -825,43 +848,69 @@
                     if(trimmed.includes('معلومات الحجز')) { currentSection = 'booking'; return; }
                     if(trimmed.includes('شروط وقوانين هامة')) { currentSection = 'rules'; return; }
 
-                    if (currentSection === 'intro') {
-                        introBody.innerHTML += `<p style="margin-bottom:6px;">${trimmed}</p>`;
-                    }
-                    else if (currentSection === 'gathering') {
-                        gatheringList.innerHTML += `<li><i class="fa-solid fa-circle-dot" style="color:var(--primary-color); margin-top:6px;"></i> <span>${trimmed}</span></li>`;
-                    }
-                    else if (currentSection === 'cost') {
-                        costBody.innerHTML += `<p>${trimmed}</p>`;
-                    }
-                    else if (currentSection === 'includes') {
-                        includesList.innerHTML += `<li><i class="fa-solid fa-check" style="color:#16a34a; margin-top:6px;"></i> <span>${trimmed}</span></li>`;
-                    }
-                    else if (currentSection === 'itinerary') {
-                        itineraryBody.innerHTML += `<p style="margin-bottom:6px;">${trimmed}</p>`;
-                    }
-                    else if (currentSection === 'needs') {
-                        needsList.innerHTML += `<li><i class="fa-solid fa-suitcase" style="color:var(--accent-color); margin-top:6px;"></i> <span>${trimmed}</span></li>`;
-                    }
-                    else if (currentSection === 'booking') {
-                        bookingList.innerHTML += `<li><i class="fa-solid fa-info-circle" style="color:var(--blue-color); margin-top:6px;"></i> <span>${trimmed}</span></li>`;
-                    }
-                    else if (currentSection === 'rules') {
-                        rulesList.innerHTML += `<li><i class="fa-solid fa-triangle-exclamation" style="color:#dc2626; margin-top:6px;"></i> <span>${trimmed}</span></li>`;
+                    // تعبئة البيانات حسب الأقسام المحددة
+                    if(currentSection === 'intro') {
+                        introBody.innerHTML += `<p>${trimmed}</p>`;
+                    } else if(currentSection === 'gathering') {
+                        gatheringList.innerHTML += `<li><i class="fa-solid fa-location-dot"></i> ${trimmed}</li>`;
+                    } else if(currentSection === 'cost') {
+                        costBody.innerHTML = trimmed;
+                    } else if(currentSection === 'includes') {
+                        includesList.innerHTML += `<li><i class="fa-solid fa-check"></i> ${trimmed}</li>`;
+                    } else if(currentSection === 'itinerary') {
+                        itineraryBody.innerHTML += `<p>${trimmed}</p>`;
+                    } else if(currentSection === 'needs') {
+                        needsList.innerHTML += `<li><i class="fa-solid fa-shirt"></i> ${trimmed}</li>`;
+                    } else if(currentSection === 'booking') {
+                        bookingList.innerHTML += `<li><i class="fa-solid fa-circle-info"></i> ${trimmed}</li>`;
+                    } else if(currentSection === 'rules') {
+                        rulesList.innerHTML += `<li><i class="fa-solid fa-triangle-exclamation"></i> ${trimmed}</li>`;
                     }
                 });
             }
 
+            // تفعيل نافذة العرض
             document.getElementById('program-modal').classList.add('active');
+            updateSlidePosition();
         }
 
         function closeProgramModal() {
             document.getElementById('program-modal').classList.remove('active');
         }
 
-        function openBookingModal(title, info) {
-            document.getElementById('client-destination').value = title;
-            document.getElementById('client-tour-date').value = info;
+        // 3. دوال تشغيل السلايدر الخاص بالصور
+        function moveSlide(direction) {
+            const wrapper = document.getElementById('modal-slider-wrapper');
+            const totalSlides = wrapper.children.length;
+            if(totalSlides <= 1) return;
+
+            currentSlideIndex += direction;
+            if (currentSlideIndex >= totalSlides) currentSlideIndex = 0;
+            if (currentSlideIndex < 0) currentSlideIndex = totalSlides - 1;
+
+            updateSlidePosition();
+        }
+
+        function jumpToSlide(index) {
+            currentSlideIndex = index;
+            updateSlidePosition();
+        }
+
+        function updateSlidePosition() {
+            const wrapper = document.getElementById('modal-slider-wrapper');
+            wrapper.style.transform = `translateX(${currentSlideIndex * 100}%)`;
+
+            const dots = document.getElementById('modal-slider-dots').children;
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].classList.remove('active');
+            }
+            if(dots[currentSlideIndex]) dots[currentSlideIndex].classList.add('active');
+        }
+
+        // 4. فتح وإغلاق استمارة طلب الحجز
+        function openBookingModal(tourTitle, tourDateInfo) {
+            document.getElementById('client-destination').value = tourTitle;
+            document.getElementById('client-tour-date').value = tourDateInfo;
             document.getElementById('booking-modal').classList.add('active');
         }
 
@@ -870,52 +919,41 @@
             document.getElementById('booking-form').reset();
         }
 
-        function moveSlide(direction) {
-            const wrapper = document.getElementById('modal-slider-wrapper');
-            const slidesCount = wrapper.children.length;
-            if (slidesCount <= 1) return;
+        // 5. دالة معالجة إرسال طلب الحجز إلى Firebase سحابياً
+        async function submitBooking(event) {
+            event.preventDefault();
 
-            currentSlideIndex = (currentSlideIndex + direction + slidesCount) % slidesCount;
-            updateSliderPosition();
-        }
-
-        function jumpToSlide(index) {
-            currentSlideIndex = index;
-            updateSliderPosition();
-        }
-
-        function updateSliderPosition() {
-            const wrapper = document.getElementById('modal-slider-wrapper');
-            wrapper.style.transform = `translateX(${currentSlideIndex * 100}%)`;
-            
-            const dots = document.getElementById('modal-slider-dots').children;
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].classList.toggle('active', i === currentSlideIndex);
-            }
-        }
-
-        function submitBooking(e) {
-            e.preventDefault();
-            
+            // تجهيز البيانات بالهيكل الصحيح لتظهر في لوحة الإدارة
             const bookingData = {
-                id: Date.now(),
                 name: document.getElementById('client-name').value,
                 phone: document.getElementById('client-phone').value,
-                email: document.getElementById('client-email').value,
+                email: document.getElementById('client-email').value || 'لا يوجد',
                 dob: document.getElementById('client-dob').value,
                 idCard: document.getElementById('client-id-card').value,
-                destination: document.getElementById('client-destination').value,
-                tourInfo: document.getElementById('client-tour-date').value,
-                status: 'قيد الانتظار',
-                dateAdded: new Date().toLocaleString()
+                trip: document.getElementById('client-destination').value,
+                tourDateInfo: document.getElementById('client-tour-date').value,
+                date: new Date().toLocaleDateString('ar-DZ'), // تاريخ اليوم للطلب
+                status: 'pending' // قيد الانتظار تلقائياً
             };
 
-            let existingBookings = JSON.parse(localStorage.getItem('bookings')) || [];
-            existingBookings.push(bookingData);
-            localStorage.setItem('bookings', JSON.stringify(existingBookings));
+            try {
+                // إرسال البيانات مباشرة إلى الفرع المخصص للحجوزات قيد الانتظار
+                const response = await fetch(`${FIREBASE_URL}pendingBookings.json`, {
+                    method: 'POST',
+                    body: JSON.stringify(bookingData)
+                });
 
-            alert('تم إرسال طلب الحجز بنجاح! سيتواصل معك فريق العمل قريباً.');
-            closeBookingModal();
+                if (response.ok) {
+                    alert('ممتاز! تم إرسال طلب حجزك بنجاح. سيتواصل معك فريق Costa Voyages قريباً لتأكيد المقاعد.');
+                    closeBookingModal();
+                } else {
+                    alert('حدث خطأ في السيرفر السحابي، يرجى إعادة المحاولة.');
+                }
+
+            } catch (error) {
+                console.error("Error submitting booking:", error);
+                alert('تأكد من اتصالك بالإنترنت ثم حاول مجدداً.');
+            }
         }
     </script>
 </body>
