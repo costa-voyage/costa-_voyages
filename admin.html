@@ -468,8 +468,7 @@
 
         async function deleteBooking(path, id) {
             if(confirm('حذف هذا الحجز نهائياً؟')) {
-                await fetch(`${FIREBASE_URL}
-                ${path}/${id}.json`, { method: 'DELETE' });
+                await fetch(`${FIREBASE_URL}${path}/${id}.json`, { method: 'DELETE' });
                 fetchData();
             }
         }
