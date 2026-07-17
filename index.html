@@ -704,11 +704,14 @@
         <p>جميع الحقوق محفوظة &copy; 2026 - **Costa Voyages** وكالة السياحة والأسفار</p>
     </footer>
 
-    <script>
+   <script>
         // رابط Firebase السحابي الخاص بك جاهز ومفعل
         const FIREBASE_URL = "https://costa-voyages-f3453-default-rtdb.europe-west1.firebasedatabase.app/";
 
         document.addEventListener('DOMContentLoaded', loadToursToHome);
+
+        // تفعيل التحديث التلقائي للموقع لجلب الرحلات الجديدة كل ثانية واحدة (1000 مللي ثانية)
+        setInterval(loadToursToHome, 1000);
 
         let allToursData = []; 
         let currentSlideIndex = 0;
@@ -955,6 +958,6 @@
                 alert('تأكد من اتصالك بالإنترنت ثم حاول مجدداً.');
             }
         }
-    </script>
+</script>
 </body>
 </html>
