@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Costa Voyages | للسياحة والسفر</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Costa Voyages</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -16,14 +17,13 @@
             --light-color: #fffaf5; 
             --blue-color: #0b3c5d; 
             --gray-color: #4a5568;
-            --bg-card: #f8fafc;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
@@ -62,8 +62,6 @@
         .logo img {
             height: 48px;
             width: auto;
-            object-fit: contain;
-            border-radius: 6px;
         }
 
         .nav-menu {
@@ -84,9 +82,9 @@
         .nav-item:hover { color: var(--primary-color); }
 
         .hero {
-            background: linear-gradient(rgba(232, 129, 33, 0.8), rgba(30, 37, 43, 0.7)), 
+            background: linear-gradient(rgba(232, 129, 33, 0.4), rgba(30, 37, 43, 0.6)), 
                         url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
-            height: 65vh;
+            height: 60vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -96,461 +94,170 @@
             padding: 20px;
         }
 
-        .hero h1 { font-size: 45px; margin-bottom: 15px; font-weight: 700; }
+        .hero h1 { font-size: 48px; margin-bottom: 15px; font-weight: 700; }
         .hero p { font-size: 20px; margin-bottom: 25px; opacity: 0.9; }
 
         .tours-section {
             max-width: 1200px;
             margin: 50px auto;
             padding: 0 20px;
-            min-height: 200px;
         }
 
         .section-title {
             text-align: center;
             margin-bottom: 40px;
-            position: relative;
-            font-size: 28px;
+            font-size: 32px;
             color: var(--dark-color);
         }
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 3px;
-            background-color: var(--primary-color);
-            margin: 12px auto 0;
-        }
-
         .tours-grid-new {
-            display: flex !important;
-            flex-wrap: wrap !important;
-            gap: 20px !important;
-            justify-content: center !important;
-            margin-top: 30px !important;
-            padding: 10px;
-            direction: rtl !important;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
         }
 
         .tour-card-new {
-            background: #fff !important;
-            border-radius: 12px !important;
-            overflow: hidden !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06) !important;
-            border: 1px solid rgba(232, 129, 33, 0.1) !important;
-            transition: transform 0.3s !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            text-align: right !important;
-            width: 280px !important; 
-            min-width: 280px !important;
-            max-width: 280px !important;
-        }
-
-        .tour-card-new:hover { transform: translateY(-5px) !important; }
-
-        .tour-img-new { 
-            height: auto !important;
-            max-height: 200px !important; 
-            width: auto !important; 
-            max-width: 100% !important; 
-            object-fit: scale-down !important;
-            display: block !important;
-            padding: 10px;
-        }
-
-        .tour-details-new { 
-            padding: 18px !important; 
-            width: 100% !important;
-            flex: 1 !important; 
-            display: flex !important; 
-            flex-direction: column !important; 
-            justify-content: space-between !important; 
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .tour-details-new h3 { 
-            color: var(--blue-color) !important; 
-            font-size: 19px !important; 
-            margin-bottom: 8px !important; 
-            font-weight: 700 !important;
-        }
-
-        .tour-details-new p { 
-            color: #555 !important; 
-            font-size: 13px !important; 
-            line-height: 1.6 !important; 
-            margin-bottom: 15px !important; 
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;  
+            background: #fff;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
         }
 
+        .tour-card-new:hover { transform: translateY(-5px); }
+
+        .tour-img-new { width: 100%; height: 220px; object-fit: cover; }
+        .tour-details-new { padding: 20px; }
+        .tour-details-new h3 { color: var(--blue-color); font-size: 22px; margin-bottom: 10px; }
+        .tour-details-new p { color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 15px; }
+        
         .tour-meta-new { 
-            font-size: 12px !important; 
-            color: #a0aec0 !important; 
-            margin-bottom: 12px !important; 
+            font-size: 13px; 
+            color: #888; 
+            margin-bottom: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 5px; 
+        }
+
+        .tour-footer-new {
             display: flex;
-            flex-direction: column;
-            gap: 4px;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
         }
 
-        .tour-footer-new { 
-            border-top: 1px solid #f0f0f0 !important;
-            padding-top: 12px !important;
-            margin-top: auto !important;
-        }
-
-        .tour-price-box {
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            margin-bottom: 10px;
-        }
-
-        .tour-price-new { 
-            font-size: 18px !important; 
-            font-weight: 700 !important; 
-            color: var(--primary-color) !important; 
-        }
-
+        .tour-price-new { font-size: 20px; font-weight: 700; color: var(--primary-color); }
+        
         .tour-action-btns {
-            display: flex !important;
-            gap: 8px !important;
-            width: 100%;
+            display: flex;
+            gap: 10px;
         }
 
         .tour-btn-new { 
-            flex: 1;
-            background: var(--blue-color) !important; 
-            color: white !important; 
-            padding: 8px 10px !important; 
-            border-radius: 6px !important; 
-            text-decoration: none !important; 
-            font-weight: 600 !important; 
-            font-size: 13px !important; 
+            background: var(--primary-color); 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 6px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 14px; 
             cursor: pointer;
             border: none;
-            text-align: center;
         }
-        .tour-btn-new:hover { background: var(--primary-color) !important; }
+        .tour-btn-new:hover { background: var(--secondary-color); }
 
         .tour-btn-details {
-            flex: 1;
-            background: #edf2f7 !important;
-            color: var(--gray-color) !important;
-            padding: 8px 10px !important;
-            border-radius: 6px !important;
-            text-decoration: none !important;
-            font-weight: 600 !important;
-            font-size: 12px !important;
+            background: #eee;
+            color: var(--dark-color);
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
-            border: 1px solid #cbd5e0 !important;
-            text-align: center;
+            border: none;
         }
-        .tour-btn-details:hover { background: #e2e8f0 !important; color: var(--dark-color) !important; }
+        .tour-btn-details:hover { background: #ddd; }
 
-        .empty-message { text-align: center; color: #a0aec0; font-size: 18px; font-style: italic; }
+        .empty-message { text-align: center; color: #888; grid-column: 1/-1; font-size: 18px; }
 
-        /* ==================== نافذة العرض والـ Modals المنظمة للأقسام ==================== */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(6px);
+            background: rgba(0,0,0,0.5);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-box {
             background: white;
             padding: 30px;
-            border-radius: 16px;
+            border-radius: 12px;
             width: 90%;
-            max-width: 450px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 500px;
             position: relative;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-            text-align: right;
-            border-top: 6px solid var(--primary-color);
-        }
-
-        .program-modal-box {
-            border-top: none !important;
-            max-width: 650px !important;
-            padding: 0 !important; 
-            overflow: hidden !important;
-            display: flex;
-            flex-direction: column;
-            height: 85vh; 
-        }
-
-        .program-modal-body {
-            padding: 20px;
-            height: 35% !important; 
-            overflow-y: auto;
-            flex: none !important; 
-            background-color: #f8fafc;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .modal-overlay.active .modal-box {
-            transform: translateY(0);
         }
 
         .modal-close {
             position: absolute;
             top: 15px;
-            left: 15px;
-            font-size: 16px;
-            background: rgba(255, 255, 255, 0.9);
+            right: 15px;
+            font-size: 20px;
+            background: none;
             border: none;
-            color: #1e252b;
             cursor: pointer;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1010;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            transition: all 0.2s ease;
-        }
-        .modal-close:hover { color: #fff; background-color: #e53e3e; transform: rotate(90deg); }
-
-        .program-modal-box h3 {
-            color: var(--blue-color);
-            font-size: 22px;
-            font-weight: 700;
-            padding: 15px 20px 10px;
-            direction: rtl;
+            color: #555;
         }
 
-        .slider-container {
-            position: relative;
-            width: 100%;
-            height: 55% !important; 
-            background-color: #edeef2; 
-            overflow: hidden;
-        }
+        .modal-box h3 { margin-bottom: 15px; color: var(--blue-color); }
+        .modal-box p { margin-bottom: 20px; color: #666; font-size: 14px; }
 
-        .slider-wrapper {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .slider-slide-container {
-            min-width: 100%;
-            max-width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
-
-        .slider-slide {
-            height: auto;
-            max-height: 100%;
-            width: auto;
-            max-width: 100%;
-            object-fit: scale-down; 
-            display: block;
-        }
-
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(4px);
-            color: var(--dark-color);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            z-index: 1005;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.2s;
-        }
-        .slider-btn:hover { background: var(--primary-color); color: white; }
-        .slider-btn.prev { right: 15px; }
-        .slider-btn.next { left: 15px; }
-
-        .slider-dots {
-            position: absolute;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 6px;
-            z-index: 1005;
-        }
-        .slider-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .slider-dot.active { background: var(--primary-color); width: 18px; border-radius: 4px; }
-
-        .info-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-            border: 1px solid #f1f5f9;
-            direction: rtl;
-            text-align: right;
-        }
-
-        .info-card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--blue-color);
-            margin-bottom: 10px;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 6px;
-        }
-
-        .info-card-header i {
-            font-size: 14px;
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .icon-intro { color: #eab308; background: #fef9c3; }
-        .icon-gathering { color: #0284c7; background: #e0f2fe; }
-        .icon-cost { color: #0d9488; background: #ccfbf1; }
-        .icon-includes { color: #16a34a; background: #dcfce7; }
-        .icon-itinerary { color: #6366f1; background: #e0e7ff; }
-        .icon-needs { color: #ea580c; background: #ffedd5; }
-        .icon-booking { color: #db2777; background: #fce7f3; }
-        .icon-rules { color: #dc2626; background: #fee2e2; }
-
-        .info-card-body {
-            font-size: 13.5px;
-            color: #475569;
-            line-height: 1.6;
-        }
-
-        .card-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .card-list li {
-            margin-bottom: 6px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            font-weight: 600;
-        }
-        .card-list li i { margin-top: 5px; font-size: 12px; }
-
-        .sub-timeline {
-            position: relative;
-            padding-right: 20px;
-            border-right: 2px solid #e2e8f0;
-            margin-right: 5px;
-            margin-top: 10px;
-        }
-        .sub-timeline-item {
-            position: relative;
-            margin-bottom: 12px;
-        }
-        .sub-timeline-item::before {
-            content: '';
-            position: absolute;
-            right: -25px;
-            top: 6px;
-            width: 8px;
-            height: 8px;
-            background: #6366f1;
-            border-radius: 50%;
-            border: 2px solid white;
-        }
-        .sub-time {
-            font-weight: 700;
-            color: #6366f1;
-            font-size: 12.5px;
-            margin-bottom: 2px;
-        }
-
-        .program-action-footer {
-            padding: 12px 20px;
-            background-color: white;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            direction: rtl;
-            height: 10%; 
-        }
-
-        .modal-form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; }
+        .modal-form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; }
         .modal-form-group label { font-weight: 600; font-size: 14px; }
-        .modal-form-group input { padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 15px; outline: none; }
-        .modal-form-group input:focus { border-color: var(--primary-color); }
-        .modal-submit-btn { background-color: var(--primary-color); color: white; border: none; width: 100%; padding: 12px; font-size: 16px; font-weight: 700; border-radius: 6px; cursor: pointer; margin-top: 10px; transition: background 0.2s; }
-        .modal-submit-btn:hover { background-color: var(--accent-color); }
+        .modal-form-group input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        
+        .modal-submit-btn { 
+            background: var(--primary-color); 
+            color: white; 
+            border: none; 
+            width: 100%; 
+            padding: 12px; 
+            font-size: 16px; 
+            font-weight: 700; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            margin-top: 10px; 
+        }
+        .modal-submit-btn:hover { background: var(--secondary-color); }
 
-        .contact-section { background-color: #fff; max-width: 600px; margin: 50px auto; padding: 40px 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 20px rgba(232, 129, 33, 0.06); border: 1px solid rgba(232, 129, 33, 0.1); }
-        .contact-section h3 { color: var(--dark-color); margin-bottom: 15px; font-size: 24px; }
-        .contact-btn { display: inline-block; background-color: var(--primary-color); color: white; padding: 15px 35px; font-size: 18px; font-weight: 700; text-decoration: none; border-radius: 50px; margin-top: 15px; box-shadow: 0 4px 15px rgba(232, 129, 33, 0.3); transition: transform 0.2s, background-color 0.2s; }
-        .contact-btn:hover { background-color: var(--secondary-color); transform: translateY(-3px); }
-        .contact-btn i { margin-left: 10px; }
+        .contact-section { max-width: 600px; margin: 50px auto; padding: 40px 20px; text-align: center; }
+        .contact-btn { display: inline-block; background-color: var(--primary-color); color: white; padding: 12px 30px; font-size: 18px; font-weight: 700; text-decoration: none; border-radius: 6px; margin-top: 15px; }
+        .contact-btn:hover { background-color: var(--secondary-color); }
 
-        footer { background-color: var(--dark-color); color: #fff; text-align: center; padding: 25px; font-size: 14px; border-top: 4px solid var(--primary-color); }
-        @media (max-width: 480px) { .nav-container { flex-direction: column; gap: 10px; } .nav-menu { gap: 10px; } .nav-item { font-size: 14px; } .program-action-footer { flex-direction: column; gap: 10px; text-align: center; } .program-modal-box { height: 92vh; } }
+        footer { background-color: var(--dark-color); color: #fff; text-align: center; padding: 20px; font-size: 14px; }
     </style>
 </head>
 <body id="accueil">
 
     <header>
         <div class="nav-container">
-            <a href="#accueil" class="logo"><img src="logo.png" alt=""> Costa Voyages</a>
+            <a href="#accueil" class="logo">Costa Voyages</a>
             <nav>
                 <ul class="nav-menu">
                     <li><a href="#accueil" class="nav-item">Accueil</a></li>
-                    <li><a href="#destinations" class="nav-item">Destinations</a></li>
+                    <li><a href="#destinations" class="nav-item">Voyages</a></li>
                     <li><a href="#contact-section" class="nav-item">Contact</a></li>
                 </ul>
             </nav>
@@ -558,356 +265,168 @@
     </header>
 
     <section class="hero">
-        <h1>Costa Voyages ابحر في عالم من المغامرات مع </h1>
-        <p>وجهات ساحرة وعروض حصرية مصممة خصيصاً لتصنع ذكريات لا تُنسى</p>
+        <h1>Explorez le monde avec Costa Voyages</h1>
+        <p>Des destinations magnifiques et des offres exclusives adaptées à vos envies</p>
     </section>
 
     <section class="tours-section" id="destinations">
-        <h2 class="section-title">قسم العروض و الرحلات</h2>
+        <h2 class="section-title">Nos Voyages & Offres</h2>
         <div id="tours-grid-new" class="tours-grid-new"></div>
     </section>
 
-    <!-- نافذة تفاصيل البرنامج -->
     <div id="program-modal" class="modal-overlay">
-        <div class="modal-box program-modal-box">
+        <div class="modal-box" style="max-width: 600px;">
             <button class="modal-close" onclick="closeProgramModal()"><i class="fa-solid fa-xmark"></i></button>
-            
-            <div class="slider-container" id="modal-slider-container">
-                <div class="slider-wrapper" id="modal-slider-wrapper"></div>
-                <button class="slider-btn prev" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-right"></i></button>
-                <button class="slider-btn next" onclick="moveSlide(1)"><i class="fa-solid fa-chevron-left"></i></button>
-                <div class="slider-dots" id="modal-slider-dots"></div>
-            </div>
-
-            <h3 id="program-modal-title">برنامج الرحلة</h3>
-            
-            <div class="program-modal-body">
-                
-                <!-- 1. المقدمة -->
-                <div class="info-card">
-                    <div class="info-card-header">
-                        <i class="fa-solid fa-star icon-intro"></i>
-                        <span>مقدمة عن الرحلة</span>
-                    </div>
-                    <div class="info-card-body" id="card-intro-body"></div>
-                </div>
-
-                <!-- 2. معلومات الرحلة والتجمع -->
-                <div class="info-card">
-                    <div class="info-card-header">
-                        <i class="fa-solid fa-map-location-dot icon-gathering"></i>
-                        <span>معلومات الرحلة والتجمع</span>
-                    </div>
-                    <div class="info-card-body">
-                        <ul id="card-gathering-list" class="card-list"></ul>
-                    </div>
-                </div>
-
-                <!-- 3. التكلفة -->
-                <div class="info-card">
-                    <div class="info-card-header">
-                        <i class="fa-solid fa-money-bill-wave icon-cost"></i>
-                        <span>التكلفة والأسعار</span>
-                    </div>
-                    <div class="info-card-body" id="card-cost-body" style="font-weight: 700; color: var(--primary-color);"></div>
-                </div>
-
-                <!-- 4. السعر يشمل -->
-                <div class="info-card">
-                    <div class="info-card-header">
-                        <i class="fa-solid fa-circle-check icon-includes"></i>
-                        <span>الخدمات والمميزات المشمولة</span>
-                    </div>
-                    <div class="info-card-body">
-                        <ul id="card-includes-list" class="card-list" style="color: #16a34a;"></ul>
-                    </div>
-                </div>
-
-                <!-- 5. برنامج الرحلة بالتفصيل -->
-                <div class="info-card">
-                    <div class="info-card-header">
-                        <i class="fa-solid fa-route icon-itinerary"></i>
-                        <span>مخطط السير وبرنامج الرحلة</span>
-                    </div>
-                    <div class="info-card-body" id="card-itinerary-body"></div>
-                </div>
-
-                <!-- 6. المستلزمات المطلوبة -->
-                <div class="info-card">
-                    <div class="info-card-header">
-                        <i class="fa-solid fa-suitcase icon-needs"></i>
-                        <span>المستلزمات المطلوبة (وش تجيب معاك)</span>
-                    </div>
-                    <div class="info-card-body">
-                        <ul id="card-needs-list" class="card-list"></ul>
-                    </div>
-                </div>
-
-                <!-- 7. معلومات الحجز -->
-                <div class="info-card">
-                    <div class="info-card-header">
-                        <i class="fa-solid fa-id-card icon-booking"></i>
-                        <span>طريقة ومعلومات الحجز المعتمدة</span>
-                    </div>
-                    <div class="info-card-body">
-                        <ul id="card-booking-list" class="card-list"></ul>
-                    </div>
-                </div>
-
-                <!-- 8. شروط وقوانين هامة -->
-                <div class="info-card">
-                    <div class="info-card-header">
-                        <i class="fa-solid fa-triangle-exclamation icon-rules"></i>
-                        <span>شروط وقوانين هامة جداً</span>
-                    </div>
-                    <div class="info-card-body">
-                        <ul id="card-rules-list" class="card-list" style="color: #dc2626;"></ul>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="program-action-footer">
-                <div>السعر الإجمالي: <strong id="program-modal-price" style="color: var(--primary-color); font-size: 20px;"></strong></div>
-                <button id="program-book-now-btn" class="tour-btn-new" style="max-width: 160px;">احجز مقعدك الآن</button>
+            <h3 id="program-modal-title">Programme de voyage</h3>
+            <div id="program-modal-body" style="white-space: pre-line; margin-bottom: 20px; font-size: 14px; color: #444; max-height: 400px; overflow-y: auto;"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 15px;">
+                <div>Prix total: <strong id="program-modal-price" style="color: var(--primary-color); font-size: 18px;"></strong></div>
+                <button id="program-book-now-btn" class="tour-btn-new">Réserver maintenant</button>
             </div>
         </div>
     </div>
 
-    <!-- استمارة طلب الحجز -->
     <div id="booking-modal" class="modal-overlay">
         <div class="modal-box">
-            <button class="modal-close" style="background: none; box-shadow: none;" onclick="closeBookingModal()"><i class="fa-solid fa-xmark"></i></button>
-            <h3>طلب حجز رحلة</h3>
-            <p>من فضلك املأ البيانات التالية وسيتواصل معك فريقنا لتأكيد الحجز.</p>
+            <button class="modal-close" onclick="closeBookingModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h3>Demande de réservation</h3>
+            <p>Veuillez remplir les informations suivantes pour soumettre votre demande.</p>
             
             <form id="booking-form" onsubmit="submitBooking(event)">
-                <div class="modal-form-group"><label>الاسم الكامل:</label><input type="text" id="client-name" required placeholder="أدخل اسمك الثلاثي"></div>
-                <div class="modal-form-group"><label>رقم الهاتف:</label><input type="tel" id="client-phone" required placeholder="مثال: 0550000000"></div>
-                <div class="modal-form-group"><label>البريد الإلكتروني (اختياري):</label><input type="email" id="client-email" placeholder="example@mail.com"></div>
-                <div class="modal-form-group"><label>تاريخ الميلاد:</label><input type="date" id="client-dob" required></div>
-                <div class="modal-form-group"><label>رقم بطاقة التعريف الوطنية:</label><input type="text" id="client-id-card" required placeholder="أدخل رقم بطاقة التعريف"></div>
-                <div class="modal-form-group"><label>الوجهة المقصودة:</label><input type="text" id="client-destination" readonly style="background-color: #f7fafc; color: var(--blue-color); font-weight: bold;"></div>
-                <div class="modal-form-group"><label>تاريخ ومدّة الوجهة المحددة:</label><input type="text" id="client-tour-date" readonly style="background-color: #f7fafc; color: var(--primary-color); font-weight: bold;"></div>
-                <button type="submit" class="modal-submit-btn">تأكيد طلب الحجز</button>
+                <div class="modal-form-group"><label>Nom complet:</label><input type="text" id="client-name" required placeholder="Votre nom complet"></div>
+                <div class="modal-form-group"><label>Numéro de téléphone:</label><input type="tel" id="client-phone" required placeholder="Ex: 0550000000"></div>
+                <div class="modal-form-group"><label>Email (Optionnel):</label><input type="email" id="client-email" placeholder="exemple@mail.com"></div>
+                <div class="modal-form-group"><label>Date de naissance:</label><input type="date" id="client-dob" required></div>
+                <div class="modal-form-group"><label>Numéro de la carte d'identité:</label><input type="text" id="client-id-card" required placeholder="Votre numéro de carte"></div>
+                <div class="modal-form-group"><label>Destination:</label><input type="text" id="client-destination" readonly style="background-color: #eee; font-weight: bold;"></div>
+                <div class="modal-form-group"><label>Date & Durée du voyage:</label><input type="text" id="client-tour-date" readonly style="background-color: #eee; font-weight: bold;"></div>
+                <button type="submit" class="modal-submit-btn">Confirmer la réservation</button>
             </form>
         </div>
     </div>
 
     <section class="contact-section" id="contact-section">
-        <h3>هل لديك أي استفسار آخر？</h3>
-        <p>يسعدنا تواصلك معنا مباشرة للإجابة على جميع تساؤلاتك، اضغط على الزر أدناه للاتصال بنا هاتفياً.</p>
-        <a href="tel:0558323058" class="contact-btn"><i class="fa-solid fa-phone"></i> اتصل بنا الآن هاتفياً</a>
+        <h3>Des questions ?</h3>
+        <p>Contactez notre équipe directement par téléphone pour plus d'informations.</p>
+        <a href="tel:0558323058" class="contact-btn"><i class="fa-solid fa-phone"></i> Appeler le 0558323058</a>
     </section>
 
     <footer>
-        <p>جميع الحقوق محفوظة &copy; 2026 - **Costa Voyages** وكالة السياحة والأسفار</p>
+        <p>&copy; 2026 - Costa Voyages. Tous droits réservés.</p>
     </footer>
 
     <script>
-        // رابط Firebase السحابي الخاص بك جاهز ومفعل
         const FIREBASE_URL = "https://costa-voyages-f3453-default-rtdb.europe-west1.firebasedatabase.app/";
 
-        document.addEventListener('DOMContentLoaded', loadToursToHome);
-
         let allToursData = []; 
-        let currentSlideIndex = 0;
 
-        // 1. دالة جلب الرحلات ديناميكياً من Firebase
-        async function loadToursToHome() {
+        // تفعيل ميزة الاستماع للتحديث التلقائي الفوري فور فتح الصفحة
+        document.addEventListener('DOMContentLoaded', startLiveToursUpdate);
+
+        // هُنا الميزة الأساسية: التحديث التلقائي الفوري والمستمر للبيانات بدون ريفريش
+        function startLiveToursUpdate() {
             const container = document.getElementById('tours-grid-new');
             if(!container) return;
 
-            try {
-                const res = await fetch(`${FIREBASE_URL}tours.json`);
-                const toursData = await res.json();
+            // استخدام EventSource لفتح اتصال مستمر وتحديث تلقائي مباشر مع Firebase
+            const eventSource = new EventSource(`${FIREBASE_URL}tours.json`);
 
-                if (!toursData) {
-                    container.innerHTML = '<p class="empty-message">العروض والرحلات الجديدة ستتوفر قريباً...</p>';
-                    return;
+            eventSource.onmessage = function(event) {
+                const streamData = JSON.parse(event.data);
+                
+                // جلب البيانات كاملة سواء عند أول اتصال أو عند حدوث أي تعديل سحابي
+                if (streamData && streamData.data) {
+                    renderTours(streamData.data);
+                } else if (streamData && streamData.path === "/") {
+                    renderTours(streamData.data);
                 }
+            };
 
-                container.innerHTML = '';
-                allToursData = [];
-
-                // تحويل بيانات الكائنات القادمة من الفايربيز إلى مصفوفة لتسهيل إدارتها
-                Object.keys(toursData).forEach((key) => {
-                    const tour = toursData[key];
-                    tour.firebaseKey = key; // حفظ المفتاح الخاص بالرحلة
-                    allToursData.push(tour);
-                });
-
-                allToursData.forEach((tour, index) => {
-                    const tourDate = tour.date ? tour.date : 'غير محدد';
-                    const combinedInfo = `التاريخ: ${tourDate} | المدة: ${tour.duration || 'غير محددة'}`;
-
-                    const card = document.createElement('div');
-                    card.classList.add('tour-card-new');
-                    card.innerHTML = `
-                        <img class="tour-img-new" src="${tour.image || 'https://via.placeholder.com/280x200'}" alt="">
-                        <div class="tour-details-new">
-                            <div>
-                                <h3>${tour.title}</h3>
-                                <div class="tour-meta-new">
-                                    <span><i class="fa-solid fa-calendar-days"></i> الانطلاق: ${tourDate}</span>
-                                    <span><i class="fa-solid fa-clock"></i> ${tour.duration || ''}</span>
-                                </div>
-                                <p>${tour.desc ? tour.desc.split('\n')[0] : ''}</p>
-                            </div>
-                            <div class="tour-footer-new">
-                                <div class="tour-price-box">
-                                    <span class="tour-price-new">${tour.price}</span>
-                                </div>
-                                <div class="tour-action-btns">
-                                    <button onclick="openProgramModal(${index})" class="tour-btn-details">تفاصيل البرنامج</button>
-                                    <button onclick="openBookingModal('${tour.title}', '${combinedInfo}')" class="tour-btn-new">احجز الآن</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-
-            } catch(e) {
-                console.error("Error loading tours from Firebase:", e);
-                container.innerHTML = '<p class="empty-message">حدث خطأ أثناء تحميل الرحلات، يرجى تحديث الصفحة.</p>';
-            }
+            eventSource.onerror = function(error) {
+                console.error("Firebase Live Stream Error:", error);
+            };
         }
 
-        // 2. فتح نافذة تفاصيل البرنامج ومعالجة البطاقات الذكية
+        // دالة بناء وعرض البطاقات بناءً على البيانات المحدثة تلقائياً
+        function renderTours(toursData) {
+            const container = document.getElementById('tours-grid-new');
+            if (!toursData) {
+                container.innerHTML = '<p class="empty-message">Aucun voyage disponible pour le moment.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            allToursData = [];
+
+            Object.keys(toursData).forEach((key) => {
+                if(toursData[key]) {
+                    const tour = toursData[key];
+                    tour.firebaseKey = key; 
+                    allToursData.push(tour);
+                }
+            });
+
+            allToursData.forEach((tour, index) => {
+                const tourDate = tour.date ? tour.date : 'Non définie';
+                const combinedInfo = `Date: ${tourDate} | Durée: ${tour.duration || 'Non définie'}`;
+
+                const card = document.createElement('div');
+                card.classList.add('tour-card-new');
+                card.innerHTML = `
+                    <img class="tour-img-new" src="${tour.image || 'https://via.placeholder.com/300x220'}" alt="">
+                    <div class="tour-details-new">
+                        <h3>${tour.title}</h3>
+                        <div class="tour-meta-new">
+                            <span><i class="fa-solid fa-calendar-days"></i> Départ: ${tourDate}</span>
+                            <span><i class="fa-solid fa-clock"></i> ${tour.duration || ''}</span>
+                        </div>
+                        <p>${tour.desc ? tour.desc.split('\n')[0] : ''}</p>
+                        <div class="tour-footer-new">
+                            <span class="tour-price-new">${tour.price}</span>
+                            <div class="tour-action-btns">
+                                <button onclick="openProgramModal(${index})" class="tour-btn-details">Détails</button>
+                                <button onclick="openBookingModal('${tour.title}', '${combinedInfo}')" class="tour-btn-new">Réserver</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
         function openProgramModal(index) {
             const tour = allToursData[index];
             if (!tour) return;
 
             document.getElementById('program-modal-title').innerText = tour.title;
             document.getElementById('program-modal-price').innerText = tour.price;
+            
+            let fullProgramText = "";
+            if (tour.desc) fullProgramText += `Description:\n${tour.desc}\n\n`;
+            if (tour.gathering) fullProgramText += `Rassemblement:\n${tour.gathering}\n\n`;
+            if (tour.includes) fullProgramText += `Le prix comprend:\n${tour.includes}\n\n`;
+            if (tour.itinerary) fullProgramText += `Programme détaillé:\n${tour.itinerary}\n\n`;
+            if (tour.needs) fullProgramText += `À prendre avec vous:\n${tour.needs}\n\n`;
+            if (tour.bookingInfo) fullProgramText += `Infos Réservation:\n${tour.bookingInfo}\n\n`;
+            if (tour.rules) fullProgramText += `Règlement & Conditions:\n${tour.rules}\n`;
 
-            const tourDate = tour.date ? tour.date : 'غير محدد';
-            const combinedInfo = `التاريخ: ${tourDate} | المدة: ${tour.duration || 'غير محددة'}`;
+            document.getElementById('program-modal-body').innerText = fullProgramText || "Aucun détail disponible.";
+
+            const tourDate = tour.date ? tour.date : 'Non définie';
+            const combinedInfo = `Date: ${tourDate} | Durée: ${tour.duration || 'Non définie'}`;
             
             document.getElementById('program-book-now-btn').onclick = function() {
                 closeProgramModal();
                 openBookingModal(tour.title, combinedInfo);
             };
 
-            const introBody = document.getElementById('card-intro-body');
-            const gatheringList = document.getElementById('card-gathering-list');
-            const costBody = document.getElementById('card-cost-body');
-            const includesList = document.getElementById('card-includes-list');
-            const itineraryBody = document.getElementById('card-itinerary-body');
-            const needsList = document.getElementById('card-needs-list');
-            const bookingList = document.getElementById('card-booking-list');
-            const rulesList = document.getElementById('card-rules-list');
-
-            introBody.innerHTML = '';
-            gatheringList.innerHTML = '';
-            costBody.innerHTML = tour.price || '';
-            includesList.innerHTML = '';
-            itineraryBody.innerHTML = '';
-            needsList.innerHTML = '';
-            bookingList.innerHTML = '';
-            rulesList.innerHTML = '';
-
-            // بناء سلايدر الصور السحابية
-            const wrapper = document.getElementById('modal-slider-wrapper');
-            const dotsContainer = document.getElementById('modal-slider-dots');
-            wrapper.innerHTML = '';
-            dotsContainer.innerHTML = '';
-            currentSlideIndex = 0;
-
-            const images = tour.images && tour.images.length > 0 ? tour.images : [tour.image];
-            
-            images.forEach((imgUrl, i) => {
-                if(!imgUrl) return;
-                const slideContainer = document.createElement('div');
-                slideContainer.classList.add('slider-slide-container');
-                slideContainer.innerHTML = `<img class="slider-slide" src="${imgUrl}" alt="">`;
-                wrapper.appendChild(slideContainer);
-
-                const dot = document.createElement('div');
-                dot.classList.add('slider-dot');
-                if(i === 0) dot.classList.add('active');
-                dot.onclick = () => jumpToSlide(i);
-                dotsContainer.appendChild(dot);
-            });
-
-            // معالجة النصوص وتقسيمها بذكاء على التبويبات الثمانية
-            if (tour.desc) {
-                const lines = tour.desc.split('\n');
-                let currentSection = 'intro';
-
-                lines.forEach(line => {
-                    const trimmed = line.trim();
-                    if(!trimmed) return;
-
-                    if(trimmed.includes('معلومات الرحلة والتجمع')) { currentSection = 'gathering'; return; }
-                    if(trimmed.includes('التكلفة') || trimmed.includes('السعر:')) { currentSection = 'cost'; return; }
-                    if(trimmed.includes('السعر يشمل') || trimmed.includes('الخدمات المشمولة')) { currentSection = 'includes'; return; }
-                    if(trimmed.includes('برنامج الرحلة')) { currentSection = 'itinerary'; return; }
-                    if(trimmed.includes('المستلزمات المطلوبة') || trimmed.includes('وش تجيب معاك')) { currentSection = 'needs'; return; }
-                    if(trimmed.includes('معلومات الحجز')) { currentSection = 'booking'; return; }
-                    if(trimmed.includes('شروط وقوانين هامة')) { currentSection = 'rules'; return; }
-
-                    // تعبئة البيانات حسب الأقسام المحددة
-                    if(currentSection === 'intro') {
-                        introBody.innerHTML += `<p>${trimmed}</p>`;
-                    } else if(currentSection === 'gathering') {
-                        gatheringList.innerHTML += `<li><i class="fa-solid fa-location-dot"></i> ${trimmed}</li>`;
-                    } else if(currentSection === 'cost') {
-                        costBody.innerHTML = trimmed;
-                    } else if(currentSection === 'includes') {
-                        includesList.innerHTML += `<li><i class="fa-solid fa-check"></i> ${trimmed}</li>`;
-                    } else if(currentSection === 'itinerary') {
-                        itineraryBody.innerHTML += `<p>${trimmed}</p>`;
-                    } else if(currentSection === 'needs') {
-                        needsList.innerHTML += `<li><i class="fa-solid fa-shirt"></i> ${trimmed}</li>`;
-                    } else if(currentSection === 'booking') {
-                        bookingList.innerHTML += `<li><i class="fa-solid fa-circle-info"></i> ${trimmed}</li>`;
-                    } else if(currentSection === 'rules') {
-                        rulesList.innerHTML += `<li><i class="fa-solid fa-triangle-exclamation"></i> ${trimmed}</li>`;
-                    }
-                });
-            }
-
-            // تفعيل نافذة العرض
             document.getElementById('program-modal').classList.add('active');
-            updateSlidePosition();
         }
 
         function closeProgramModal() {
             document.getElementById('program-modal').classList.remove('active');
         }
 
-        // 3. دوال تشغيل السلايدر الخاص بالصور
-        function moveSlide(direction) {
-            const wrapper = document.getElementById('modal-slider-wrapper');
-            const totalSlides = wrapper.children.length;
-            if(totalSlides <= 1) return;
-
-            currentSlideIndex += direction;
-            if (currentSlideIndex >= totalSlides) currentSlideIndex = 0;
-            if (currentSlideIndex < 0) currentSlideIndex = totalSlides - 1;
-
-            updateSlidePosition();
-        }
-
-        function jumpToSlide(index) {
-            currentSlideIndex = index;
-            updateSlidePosition();
-        }
-
-        function updateSlidePosition() {
-            const wrapper = document.getElementById('modal-slider-wrapper');
-            wrapper.style.transform = `translateX(${currentSlideIndex * 100}%)`;
-
-            const dots = document.getElementById('modal-slider-dots').children;
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].classList.remove('active');
-            }
-            if(dots[currentSlideIndex]) dots[currentSlideIndex].classList.add('active');
-        }
-
-        // 4. فتح وإغلاق استمارة طلب الحجز
         function openBookingModal(tourTitle, tourDateInfo) {
             document.getElementById('client-destination').value = tourTitle;
             document.getElementById('client-tour-date').value = tourDateInfo;
@@ -919,40 +438,37 @@
             document.getElementById('booking-form').reset();
         }
 
-        // 5. دالة معالجة إرسال طلب الحجز إلى Firebase سحابياً
         async function submitBooking(event) {
             event.preventDefault();
 
-            // تجهيز البيانات بالهيكل الصحيح لتظهر في لوحة الإدارة
             const bookingData = {
-                name: document.getElementById('client-name').value,
+                fullName: document.getElementById('client-name').value,
                 phone: document.getElementById('client-phone').value,
-                email: document.getElementById('client-email').value || 'لا يوجد',
+                email: document.getElementById('client-email').value || 'Non fourni',
                 dob: document.getElementById('client-dob').value,
                 idCard: document.getElementById('client-id-card').value,
-                trip: document.getElementById('client-destination').value,
-                tourDateInfo: document.getElementById('client-tour-date').value,
-                date: new Date().toLocaleDateString('ar-DZ'), // تاريخ اليوم للطلب
-                status: 'pending' // قيد الانتظار تلقائياً
+                destination: document.getElementById('client-destination').value,
+                tourDate: document.getElementById('client-tour-date').value,
+                status: "قيد الانتظار",
+                createdAt: new Date().toISOString()
             };
 
             try {
-                // إرسال البيانات مباشرة إلى الفرع المخصص للحجوزات قيد الانتظار
-                const response = await fetch(`${FIREBASE_URL}pendingBookings.json`, {
+                const res = await fetch(`${FIREBASE_URL}bookings.json`, {
                     method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(bookingData)
                 });
 
-                if (response.ok) {
-                    alert('ممتاز! تم إرسال طلب حجزك بنجاح. سيتواصل معك فريق Costa Voyages قريباً لتأكيد المقاعد.');
+                if (res.ok) {
+                    alert('Votre demande de réservation a été envoyée avec succès !');
                     closeBookingModal();
                 } else {
-                    alert('حدث خطأ في السيرفر السحابي، يرجى إعادة المحاولة.');
+                    alert('Erreur lors de l\'envoi de la demande.');
                 }
-
-            } catch (error) {
-                console.error("Error submitting booking:", error);
-                alert('تأكد من اتصالك بالإنترنت ثم حاول مجدداً.');
+            } catch (e) {
+                console.error("Error saving booking:", e);
+                alert('Erreur de connexion au serveur.');
             }
         }
     </script>
