@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - إدارة الرحلات والحجوزات</title>
+    <!-- استدعاء خط Cairo وأيقونات Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+           --primary-color: #e88121;
+           --dark-blue: #0b3c5d;
+            --light-bg: #f4f7f6;
+            --white: #ffffff;
+           --text-color: #333333;
+        }
+ 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+           font-family: 'Cairo', sans-serif;
+        }
+ 
+        body {
+           background-color: var(--light-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* شاشة تسجيل الدخول */
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-blue);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .login-card h2 {
+            color: var(--dark-blue);
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .login-card .form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-card .btn-login {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-card .btn-login:hover {
+            background-color: #d06d16;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+ 
+        /* القائمة الجانبية */
+        .sidebar {
+            width: 260px;
+           background-color: var(--dark-blue);
+            color: var(--white);
+            padding: 20px;
+            display: flex;
+           flex-direction: column;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+ 
+        .sidebar h2 {
+            text-align: center;
+            font-size: 22px;
+           margin-bottom: 30px;
+            color: var(--primary-color);
+           border-bottom: 2px dashed rgba(255,255,255,0.1);
+           padding-bottom: 15px;
+        }
+ 
+        .sidebar a {
+            color: var(--white);
+           text-decoration: none;
+            padding: 12px 15px;
+           margin-bottom: 10px;
+           border-radius: 8px;
+            display: flex;
+           align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+           font-weight: 600;
+        }
+ 
+        .sidebar a:hover, .sidebar a.active {
+           background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .sidebar .logout-btn {
+            background-color: #ef4444;
+            margin-top: auto;
+        }
+
+        .sidebar .logout-btn:hover {
+            background-color: #dc2626;
+        }
+ 
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+ 
+        .header {
+            display: flex;
+           justify-content: space-between;
+           align-items: center;
+           margin-bottom: 30px;
+            background: var(--white);
+            padding: 20px;
+           border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+ 
+        .header h1 {
+            color: var(--dark-blue);
+           font-size: 26px;
+        }
+ 
+        /* كروت الإحصائيات */
+        .stats-grid {
+            display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+           margin-bottom: 40px;
+        }
+ 
+        .stat-card {
+            background: var(--white);
+            padding: 25px;
+           border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            display: flex;
+           align-items: center;
+           justify-content: space-between;
+           border-right: 5px solid var(--primary-color);
+        }
+ 
+       .stat-card.bookings-card {
+           border-right-color: #22c55e;
+        }
+ 
+        .stat-info h3 {
+            font-size: 14px;
+            color: #718096;
+           margin-bottom: 5px;
+        }
+ 
+       .stat-info p {
+            font-size: 28px;
+           font-weight: 700;
+            color: var(--dark-blue);
+        }
+ 
+        .stat-icon {
+            font-size: 35px;
+            color: #e2e8f0;
+        }
+ 
+        /* الأقسام والمجموعات */
+       .dashboard-section {
+            background: var(--white);
+            padding: 30px;
+           border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+           margin-bottom: 40px;
+        }
+ 
+       .dashboard-section h2 {
+            color: var(--dark-blue);
+           margin-bottom: 25px;
+            font-size: 20px;
+            display: flex;
+           align-items: center;
+            gap: 10px;
+           border-bottom: 2px solid var(--light-bg);
+           padding-bottom: 10px;
+        }
+ 
+       .section-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--light-bg);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+       }
+ 
+       .section-header-container h2 {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+       }
+
+       /* أدوات الفرز والتصفية */
+       .filter-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+       }
+
+       .select-filter {
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark-blue);
+            outline: none;
+            background-color: #f8fafc;
+            min-width: 200px;
+            cursor: pointer;
+       }
+
+       .select-filter:focus {
+            border-color: var(--primary-color);
+       }
+ 
+        /* الاستمارات */
+        .form-grid {
+            display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+           margin-bottom: 20px;
+        }
+ 
+        .form-group {
+            display: flex;
+           flex-direction: column;
+            gap: 8px;
+        }
+ 
+        .form-group label {
+           font-weight: 600;
+            font-size: 14px;
+            color: var(--dark-blue);
+        }
+ 
+        .form-group input, .form-group textarea {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+           border-radius: 8px;
+            outline: none;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+ 
+        .form-group input:focus, .form-group textarea:focus {
+           border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(232, 129, 33, 0.1);
+        }
+ 
+        /* رفع الملفات */
+       .file-upload-wrapper {
+            position: relative;
+           display: inline-block;
+            width: 100%;
+        }
+ 
+       .file-upload-btn {
+            display: flex;
+           align-items: center;
+           justify-content: center;
+            gap: 10px;
+           background-color: #edf2f7;
+           color: var(--dark-blue);
+            padding: 12px;
+           border-radius: 8px;
+            border: 2px dashed #cbd5e0;
+            cursor: pointer;
+           font-weight: 600;
+            text-align: center;
+            transition: background 0.3s;
+        }
+ 
+       .file-upload-btn:hover {
+           background-color: #e2e8f0;
+        }
+ 
+       .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+           width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+ 
+       .file-name-indicator {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 5px;
+            display: block;
+        }
+ 
+        .btn-submit {
+           background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+           border-radius: 8px;
+            cursor: pointer;
+           font-weight: 700;
+            font-size: 16px;
+            transition: background 0.3s;
+            margin-top: 15px;
+            display: inline-flex;
+           align-items: center;
+            gap: 10px;
+        }
+ 
+       .btn-submit:hover {
+           background-color: #d06d16;
+       }
+ 
+        .btn-delete {
+           background-color: #ef4444;
+            color: var(--white);
+            border: none;
+            padding: 6px 12px;
+           border-radius: 6px;
+           cursor: pointer;
+            font-size: 14px;
+           font-weight: 600;
+            transition: background 0.3s;
+        }
+ 
+       .btn-delete:hover {
+           background-color: #dc2626;
+        }
+
+       .btn-print-all {
+           background-color: #3b82f6;
+           color: var(--white);
+           border: none;
+           padding: 10px 20px;
+           border-radius: 8px;
+           cursor: pointer;
+           font-weight: 700;
+           font-size: 14px;
+           transition: background 0.3s;
+           display: flex;
+           align-items: center;
+           gap: 8px;
+       }
+
+       .btn-print-all:hover {
+           background-color: #2563eb;
+       }
+ 
+        /* الجداول */
+       .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+ 
+        table {
+            width: 100%;
+           border-collapse: collapse;
+            text-align: right;
+            margin-top: 10px;
+        }
+ 
+        th, td {
+            padding: 15px;
+           border-bottom: 1px solid #edf2f7;
+        }
+ 
+        th {
+           background-color: var(--light-bg);
+            color: var(--dark-blue);
+           font-weight: 700;
+        }
+ 
+        tr:hover {
+           background-color: #f8fafc;
+        }
+ 
+        @media (max-width: 768px) {
+           body { flex-direction: column; }
+            .sidebar { width: 100%; }
+           .main-content { padding: 15px; }
+           .section-header-container { flex-direction: column; align-items: flex-start; }
+           .filter-controls { width: 100%; flex-direction: column; align-items: flex-start; }
+           .select-filter { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شاشة تسجيل الدخول -->
+    <div class="login-container" id="login-screen">
+        <div class="login-card">
+            <h2>تسجيل الدخول للوحة التحكم</h2>
+            <div class="error-message" id="login-error">اسم المستخدم أو كلمة المرور غير صحيحة!</div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>اسم المستخدم</label>
+                    <input type="text" id="login-username" required placeholder="أدخل اسم المستخدم">
+                </div>
+                <div class="form-group">
+                    <label>كلمة السر</label>
+                    <input type="password" id="login-password" required placeholder="أدخل كلمة السر">
+                </div>
+                <button type="submit" class="btn-login"><i class="fa-solid fa-lock-open"></i> دخول</button>
+            </form>
+        </div>
+    </div>
+ 
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <h2>Costa Voyages</h2>
+        <a href="#dashboard" class="active"><i class="fa-solid fa-chart-line"></i> الإحصائيات</a>
+        <a href="#add-tour-section"><i class="fa-solid fa-plus"></i> إضافة رحلة جديدة</a>
+        <a href="#tours-list-section"><i class="fa-solid fa-plane"></i> الرحلات الحالية</a>
+        <a href="#bookings-section"><i class="fa-solid fa-ticket"></i> طلبات الحجوزات</a>
+        <a href="#settings-section"><i class="fa-solid fa-user-gear"></i> إعدادات الحساب</a>
+        <a href="#" class="logout-btn" onclick="handleLogout(event)"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</a>
+    </div>
+ 
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <div class="header">
+            <h1>لوحة التحكم والإشراف</h1>
+            <div style="font-weight: 600; color: var(--dark-blue);" id="welcome-user">مرحباً بك، مدير الموقع</div>
+        </div>
+ 
+        <!-- الإحصائيات السريعة -->
+        <div class="stats-grid" id="dashboard">
+            <div class="stat-card">
+                <div class="stat-info">
+                   <h3>إجمالي الرحلات المنشورة</h3>
+                   <p id="total-tours">0</p>
+               </div>
+                <div class="stat-icon"><i class="fa-solid fa-earth-americas"></i></div>
+           </div>
+            <div class="stat-card bookings-card">
+                <div class="stat-info">
+                   <h3>طلبات الحجز النشطة</h3>
+                   <p id="total-bookings-count">0</p>
+               </div>
+                <div class="stat-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+           </div>
+        </div>
+ 
+        <!-- قسم إضافة رحلة جديدة -->
+        <div class="dashboard-section" id="add-tour-section">
+           <h2><i class="fa-solid fa-pen-to-square"></i> نشر رحلة سياحية جديدة</h2>
+            <form id="tour-form" onsubmit="addTour(event)">
+                <div class="form-grid">
+                   <div class="form-group">
+                       <label for="tour-title">عنوان الرحلة / الوجهة</label>
+                       <input type="text" id="tour-title" placeholder="مثال: رحلة سفاري في دبي" required>
+                   </div>
+                   <div class="form-group">
+                       <label for="tour-price">السعر الافتراضي</label>
+                       <input type="text" id="tour-price" placeholder="مثال: 45000 دج" required>
+                   </div>
+                   <div class="form-group">
+                       <label for="tour-duration">مدة الرحلة</label>
+                       <input type="text" id="tour-duration" placeholder="مثال: 7 أيام / 6 ليالي" required>
+                   </div>
+                   <div class="form-group">
+                       <label for="tour-date">تاريخ انطلاق الرحلة</label>
+                       <input type="date" id="tour-date" required>
+                   </div>
+                </div>
+ 
+                <div class="form-group" style="margin-bottom: 20px;">
+                   <label>صور المعرض والواجهة للرحلة</label>
+                   <div class="file-upload-wrapper">
+                       <div class="file-upload-btn">
+                           <i class="fa-solid fa-cloud-arrow-up"></i> Sélectionner des photos (إختر صور الرحلة)
+                       </div>
+                       <input type="file" id="tour-image-file" accept="image/*" multiple required>
+                   </div>
+                   <span class="file-name-indicator" id="file-name-display">لم يتم اختيار صور بعد</span>
+               </div>
+ 
+                <div class="form-group" style="margin-bottom: 20px;">
+                   <label for="tour-desc">تفاصيل ووصف البرنامج السياحي للرحلة</label>
+                   <textarea id="tour-desc" rows="5" placeholder="أكتب هنا تفاصيل الفندق، النقل، المزارات السياحية الشاملة للرحلة..." required></textarea>
+               </div>
+ 
+               <button type="submit" class="btn-submit"><i class="fa-solid fa-paper-plane"></i> نشر وإدراج الرحلة فوراً</button>
+           </form>
+        </div>
+ 
+        <!-- قسم الرحلات الحالية المتوفرة -->
+        <div class="dashboard-section" id="tours-list-section">
+           <h2><i class="fa-solid fa-list-check"></i> الرحلات المدرجة حالياً بالموقع</h2>
+            <div class="table-responsive">
+               <table>
+                   <thead>
+                       <tr>
+                           <th>الوجهة / البرنامج</th>
+                           <th>السعر المعروض</th>
+                           <th>تاريخ الانطلاق</th>
+                           <th>إجراءات التحكم</th>
+                       </tr>
+                   </thead>
+                   <tbody id="tours-list">
+                       <!-- يتم التوليد عبر سكريبت -->
+                   </tbody>
+               </table>
+            </div>
+        </div>
+ 
+        <!-- قسم طلبات الحجوزات القادمة من الزبائن في الانتظار -->
+        <div class="dashboard-section" id="bookings-section">
+           <div class="section-header-container">
+               <h2><i class="fa-solid fa-spinner fa-spin" style="color: var(--primary-color);"></i> طلبات الحجوزات الواردة (في الانتظار)</h2>
+               
+               <div class="filter-controls">
+                   <label style="font-weight: bold; color: var(--dark-blue); font-size: 14px;">عرض حسب الرحلة:</label>
+                   <select id="pending-tour-filter-dropdown" class="select-filter" onchange="filterPendingBookings()">
+                       <option value="all">كل الرحلات المتوفرة</option>
+                   </select>
+                   <button class="btn-print-all" style="background-color: #e88121;" onclick="printFilteredPendingBookings()">
+                       <i class="fa-solid fa-print"></i> طباعة قائمة الانتظار للرحلة
+                   </button>
+               </div>
+           </div>
+            <div class="table-responsive">
+               <table>
+                   <thead>
+                       <tr>
+                           <th>اسم العميل</th>
+                           <th>رقم هاتف العميل</th>
+                           <th>تاريخ الميلاد</th>
+                           <th>رقم بطاقة التعريف</th>
+                           <th>الرحلة المطلوبة</th>
+                           <th>تاريخ ومدة الوجهة</th>
+                           <th>الحالة والتحكم</th>
+                       </tr>
+                   </thead>
+                   <tbody id="pending-bookings-list">
+                       <!-- تظهر هنا تلقائياً -->
+                   </tbody>
+               </table>
+           </div>
+        </div>
+ 
+        <!-- قسم الحجوزات المؤكدة -->
+        <div class="dashboard-section">
+           <div class="section-header-container">
+               <h2><i class="fa-solid fa-circle-check" style="color: #22c55e;"></i> الحجوزات المؤكدة والنهائية</h2>
+               
+               <div class="filter-controls">
+                   <label style="font-weight: bold; color: var(--dark-blue); font-size: 14px;">عرض حسب الرحلة:</label>
+                   <select id="tour-filter-dropdown" class="select-filter" onchange="filterConfirmedBookings()">
+                       <option value="all">كل الرحلات المتوفرة</option>
+                   </select>
+                   <button class="btn-print-all" onclick="printFilteredConfirmedBookings()">
+                       <i class="fa-solid fa-print"></i> طباعة قائمة الرحلة المحددة
+                   </button>
+               </div>
+           </div>
+            <div class="table-responsive">
+               <table>
+                   <thead>
+                       <tr>
+                           <th>اسم العميل</th>
+                           <th>رقم الهاتف</th>
+                           <th>تاريخ الميلاد</th>
+                           <th>رقم بطاقة التعريف</th>
+                           <th>الرحلة المؤكدة</th>
+                           <th>تاريخ ومدة الوجهة</th>
+                           <th>الخيارات</th>
+                       </tr>
+                   </thead>
+                   <tbody id="confirmed-bookings-list">
+                       <!-- تظهر هنا تلقائياً -->
+                   </tbody>
+               </table>
+           </div>
+        </div>
+
+        <!-- قسم إعدادات الحساب وتغيير كلمة المرور -->
+        <div class="dashboard-section" id="settings-section">
+            <h2><i class="fa-solid fa-user-gear"></i> إعدادات حساب المسؤول وتغيير كلمة السر</h2>
+            <form onsubmit="updateAdminAccount(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>اسم المستخدم الجديد</label>
+                        <input type="text" id="settings-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>كلمة السر الجديدة</label>
+                        <input type="password" id="settings-password" required placeholder="أدخل كلمة السر الجديدة">
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit" style="background-color: var(--dark-blue);"><i class="fa-solid fa-floppy-disk"></i> حفظ التغييرات الجديدة</button>
+            </form>
+         </div>
+ 
+    </div>
+ 
+    <script>
+        let base64ImagesArray = [];
+ 
+       document.addEventListener('DOMContentLoaded', () => {
+           checkLoginStatus();
+           loadDashboard();
+           loadBookings(); 
+           initSettingsForm();
+           setInterval(loadBookings, 3000); 
+        });
+
+       // نظام فحص وتسجيل الدخول وحماية الصفحة
+       function checkLoginStatus() {
+            // التعيين الافتراضي إذا لم يكن مسجلاً من قبل
+            if (!localStorage.getItem('admin_username')) {
+                localStorage.setItem('admin_username', 'admin');
+                localStorage.setItem('admin_password', '12345');
+            }
+
+            const session = sessionStorage.getItem('admin_logged_in');
+            if (session === 'true') {
+                document.getElementById('login-screen').style.display = 'none';
+            } else {
+                document.getElementById('login-screen').style.display = 'flex';
+            }
+       }
+
+       function handleLogin(event) {
+            event.preventDefault();
+            const userIn = document.getElementById('login-username').value;
+            const passIn = document.getElementById('login-password').value;
+
+            const adminUser = localStorage.getItem('admin_username');
+            const adminPass = localStorage.getItem('admin_password');
+
+            if (userIn === adminUser && passIn === adminPass) {
+                sessionStorage.setItem('admin_logged_in', 'true');
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('login-error').style.display = 'none';
+                document.getElementById('welcome-user').textContent = `مرحباً بك، ${adminUser}`;
+                initSettingsForm();
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+       }
+
+       function handleLogout(event) {
+            event.preventDefault();
+            sessionStorage.removeItem('admin_logged_in');
+            location.reload();
+       }
+
+       function initSettingsForm() {
+            document.getElementById('settings-username').value = localStorage.getItem('admin_username') || 'admin';
+            document.getElementById('welcome-user').textContent = `مرحباً بك، ${localStorage.getItem('admin_username') || 'مدير الموقع'}`;
+       }
+
+       function updateAdminAccount(event) {
+            event.preventDefault();
+            const newUsername = document.getElementById('settings-username').value;
+            const newPassword = document.getElementById('settings-password').value;
+
+            localStorage.setItem('admin_username', newUsername);
+            localStorage.setItem('admin_password', newPassword);
+
+            alert('تم تحديث بيانات الحساب وكلمة السر بنجاح!');
+            initSettingsForm();
+            document.getElementById('settings-password').value = '';
+       }
+ 
+       document.getElementById('tour-image-file').addEventListener('change', function(e) {
+            const files = e.target.files;
+           base64ImagesArray = []; 
+ 
+            if (files.length > 0) {
+               document.getElementById('file-name-display').textContent = `تم اختيار عدد (${files.length}) صور بنجاح`;
+               Array.from(files).forEach(file => {
+                   const reader = new FileReader();
+                   reader.onload = function(event) {
+                       base64ImagesArray.push(event.target.result); 
+                    };
+                   reader.readAsDataURL(file);
+                });
+            } else {
+               document.getElementById('file-name-display').textContent = "لم يتم اختيار صور بعد";
+            }
+        });
+ 
+        function getTours() {
+            return JSON.parse(localStorage.getItem('tours')) || [];
+        }
+ 
+        function saveTours(tours) {
+           localStorage.setItem('tours', JSON.stringify(tours));
+        }
+ 
+        function loadDashboard() {
+            const tours = getTours();
+           document.getElementById('total-tours').textContent = tours.length;
+ 
+            const toursList = document.getElementById('tours-list');
+           toursList.innerHTML = '';
+ 
+           const filterDropdown = document.getElementById('tour-filter-dropdown');
+           const pendingFilterDropdown = document.getElementById('pending-tour-filter-dropdown');
+           
+           const selectedValue = filterDropdown.value; 
+           const selectedPendingValue = pendingFilterDropdown.value;
+
+           filterDropdown.innerHTML = '<option value="all">كل الرحلات المتوفرة</option>';
+           pendingFilterDropdown.innerHTML = '<option value="all">كل الرحلات المتوفرة</option>';
+
+           tours.forEach((tour, index) => {
+                const tr = document.createElement('tr');
+               tr.innerHTML = `
+                   <td><strong>${tour.title}</strong></td>
+                  <td><span style="color: var(--primary-color); font-weight: bold;">${tour.price}</span></td>
+                   <td><span style="color: var(--dark-blue); font-weight: 600;">${tour.date || 'غير محدد'}</span></td>
+                   <td>
+                       <button class="btn-delete" onclick="deleteTour(${index})">
+                           <i class="fa-solid fa-trash"></i> حذف
+                       </button>
+                   </td>
+                `;
+               toursList.appendChild(tr);
+
+               const option1 = document.createElement('option');
+               option1.value = tour.title;
+               option1.textContent = tour.title;
+               filterDropdown.appendChild(option1);
+
+               const option2 = document.createElement('option');
+               option2.value = tour.title;
+               option2.textContent = tour.title;
+               pendingFilterDropdown.appendChild(option2);
+            });
+
+           filterDropdown.value = selectedValue;
+           pendingFilterDropdown.value = selectedPendingValue;
+        }
+ 
+        function addTour(event) {
+           event.preventDefault();
+            const title = document.getElementById('tour-title').value;
+            const price = document.getElementById('tour-price').value;
+            const duration = document.getElementById('tour-duration').value;
+            const date = document.getElementById('tour-date').value; 
+           const desc = document.getElementById('tour-desc').value;
+ 
+            if (base64ImagesArray.length === 0) {
+               alert("من فضلك اختر صورة واحدة على الأقل بالضغط على Sélectionner des photos");
+                return;
+            }
+ 
+            const newTour = { 
+                title, 
+                price, 
+                image: base64ImagesArray[0], 
+                allImages: base64ImagesArray, 
+               duration, 
+                date, 
+                desc 
+            };
+ 
+            const tours = getTours();
+           tours.push(newTour);
+           saveTours(tours);
+ 
+           document.getElementById('tour-form').reset();
+           document.getElementById('file-name-display').textContent = "لم يتم اختيار صور بعد";
+           base64ImagesArray = []; 
+           loadDashboard();
+            alert('تمت إضافة رحلتك ونشرها بنجاح!');
+        }
+ 
+        function deleteTour(index) {
+           if(confirm('هل أنت متأكد من حذف هذه الرحلة نهائياً؟')) {
+                const tours = getTours();
+               tours.splice(index, 1);
+               saveTours(tours);
+               loadDashboard();
+               loadBookings();
+            }
+        }
+ 
+        function loadBookings() {
+           filterPendingBookings();
+           filterConfirmedBookings();
+        }
+
+        function filterPendingBookings() {
+            const pendingBookings = JSON.parse(localStorage.getItem('pendingBookings')) || 
+                                   JSON.parse(localStorage.getItem('bookings')) || 
+                                   JSON.parse(localStorage.getItem('reservations')) || [];
+ 
+            document.getElementById('total-bookings-count').textContent = pendingBookings.length;
+ 
+            const pendingFilterValue = document.getElementById('pending-tour-filter-dropdown').value;
+            const pendingList = document.getElementById('pending-bookings-list');
+            pendingList.innerHTML = '';
+
+            const filteredPendingList = pendingBookings.filter(booking => {
+                if (pendingFilterValue === 'all') return true;
+                const tripTitle = booking.trip || booking.tour || booking.tourTitle || booking.title || booking.selectedTrip || booking.destination || '';
+                return tripTitle === pendingFilterValue;
+            });
+           
+           if(filteredPendingList.length === 0) {
+               pendingList.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#718096;">لا توجد حجوزات في الانتظار لهذه الوجهة حالياً</td></tr>`;
+            } else {
+               filteredPendingList.forEach((booking) => {
+                   const realIndex = pendingBookings.indexOf(booking);
+
+                   const clientName = booking.name || booking.username || booking.clientName || booking['full-name'] || 'عميل غير مسجل';
+                   const clientPhone = booking.phone || booking.tel || booking.phone_number || booking.telephone || 'غير متوفر';
+                   const clientDob = booking.dob || booking.birthdate || booking.dateOfBirth || '';
+                   const clientIdCard = booking.idCard || booking.passport || booking.nationalId || '';
+                   const tripTitle = booking.trip || booking.tour || booking.tourTitle || booking.title || booking.selectedTrip || booking.destination || 'رحلة غير محددة';
+                   const tourInfo = booking.tourInfo || booking.tripDetails || booking.tourDate || '';
+ 
+                   const tr = document.createElement('tr');
+                   tr.innerHTML = `
+                       <td><strong>${clientName}</strong></td>
+                       <td>${clientPhone}</td>
+                       <td>${clientDob}</td>
+                       <td>${clientIdCard}</td>
+                       <td><span style="color: var(--dark-blue); font-weight:600;">${tripTitle}</span></td>
+                       <td>${tourInfo}</td>
+                       <td>
+                           <button class="btn-submit" style="margin-top:0; padding: 6px 12px; font-size:14px; background-color: #22c55e;" onclick="confirmBooking(${realIndex})">
+                                <i class="fa-solid fa-check"></i> تأكيد
+                           </button>
+                           <button class="btn-delete" onclick="deleteBooking('pending', ${realIndex})">
+                                <i class="fa-solid fa-trash"></i> حذف
+                           </button>
+                       </td>
+                    `;
+                   pendingList.appendChild(tr);
+                });
+            }
+        }
+
+        function filterConfirmedBookings() {
+            const confirmedBookings = JSON.parse(localStorage.getItem('confirmedBookings')) || [];
+            const filterValue = document.getElementById('tour-filter-dropdown').value;
+            const confirmedList = document.getElementById('confirmed-bookings-list');
+            
+            confirmedList.innerHTML = '';
+
+            const filteredList = confirmedBookings.filter(booking => {
+                if (filterValue === 'all') return true;
+                const tripTitle = booking.trip || booking.tour || booking.tourTitle || booking.title || '';
+                return tripTitle === filterValue;
+            });
+
+            if(filteredList.length === 0) {
+               confirmedList.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#718096;">لا توجد حجوزات مؤكدة لهذه الوجهة حالياً</td></tr>`;
+            } else {
+                filteredList.forEach((booking) => {
+                   const realIndex = confirmedBookings.indexOf(booking);
+                   
+                   const clientName = booking.name || booking.username || booking.clientName || 'عميل غير مسجل';
+                   const clientPhone = booking.phone || booking.tel || booking.phone_number || 'غير متوفر';
+                   const clientDob = booking.dob || booking.birthdate || '';
+                   const clientIdCard = booking.idCard || booking.nationalId || '';
+                   const tripTitle = booking.trip || booking.tour || booking.tourTitle || booking.title || 'رحلة غير محددة';
+                   const tourInfo = booking.tourInfo || '';
+ 
+                   const tr = document.createElement('tr');
+                   tr.innerHTML = `
+                       <td><strong>${clientName}</strong></td>
+                       <td>${clientPhone}</td>
+                       <td>${clientDob}</td>
+                       <td>${clientIdCard}</td>
+                       <td><span style="color: var(--dark-blue); font-weight:600;">${tripTitle}</span></td>
+                       <td>${tourInfo}</td>
+                       <td>
+                           <button class="btn-delete" onclick="deleteBooking('confirmed', ${realIndex})">
+                                <i class="fa-solid fa-trash"></i> حذف
+                           </button>
+                       </td>
+                    `;
+                   confirmedList.appendChild(tr);
+                });
+            }
+        }
+ 
+        function confirmBooking(index) {
+            let pendingKey = localStorage.getItem('pendingBookings') ? 'pendingBookings' : 
+                            (localStorage.getItem('bookings') ? 'bookings' : 'reservations');
+            
+            let pendingBookings = JSON.parse(localStorage.getItem(pendingKey)) || [];
+            let confirmedBookings = JSON.parse(localStorage.getItem('confirmedBookings')) || [];
+ 
+            const rawBooking = pendingBookings.splice(index, 1)[0];
+            
+            const approvedBooking = {
+                name: rawBooking.name || rawBooking.username || rawBooking.clientName || rawBooking['full-name'] || 'عميل غير مسجل',
+                phone: rawBooking.phone || rawBooking.tel || rawBooking.phone_number || 'غير متوفر',
+                dob: rawBooking.dob || rawBooking.birthdate || '',
+                idCard: rawBooking.idCard || rawBooking.nationalId || '',
+                trip: rawBooking.trip || rawBooking.tour || rawBooking.tourTitle || rawBooking.title || rawBooking.selectedTrip || rawBooking.destination || 'رحلة غير محددة',
+                tourInfo: rawBooking.tourInfo || rawBooking.tripDetails || ''
+            };
+            
+           confirmedBookings.push(approvedBooking);
+           localStorage.setItem(pendingKey, JSON.stringify(pendingBookings));
+           localStorage.setItem('confirmedBookings', JSON.stringify(confirmedBookings));
+           loadBookings();
+        }
+ 
+        function deleteBooking(type, index) {
+           if(confirm('هل أنت متأكد من حذف هذا الحجز نهائياً؟')) {
+                let key = type === 'pending' ? (localStorage.getItem('pendingBookings') ? 'pendingBookings' : (localStorage.getItem('bookings') ? 'bookings' : 'reservations')) : 'confirmedBookings';
+                let bookings = JSON.parse(localStorage.getItem(key)) || [];
+               bookings.splice(index, 1);
+               localStorage.setItem(key, JSON.stringify(bookings));
+               loadBookings();
+            }
+        }
+ 
+        function printFilteredPendingBookings() {
+            const pendingBookings = JSON.parse(localStorage.getItem('pendingBookings')) || 
+                                   JSON.parse(localStorage.getItem('bookings')) || 
+                                   JSON.parse(localStorage.getItem('reservations')) || [];
+            const filterPendingValue = document.getElementById('pending-tour-filter-dropdown').value;
+            
+            const filteredPendingList = pendingBookings.filter(booking => {
+                if (filterPendingValue === 'all') return true;
+                const tripTitle = booking.trip || booking.tour || booking.tourTitle || booking.title || booking.selectedTrip || booking.destination || '';
+                return tripTitle === filterPendingValue;
+            });
+
+            if(filteredPendingList.length === 0) {
+                alert("لا توجد أي حجوزات في الانتظار في القائمة المحددة لطباعتها!");
+                return;
+            }
+ 
+            const printWindow = window.open('', '_blank');
+            let tableRows = '';
+            
+            filteredPendingList.forEach((booking, index) => {
+                const name = booking.name || booking.username || booking.clientName || booking['full-name'] || 'عميل غير مسجل';
+                const phone = booking.phone || booking.tel || booking.phone_number || 'غير متوفر';
+                const trip = booking.trip || booking.tour || booking.tourTitle || booking.title || 'رحلة غير محددة';
+                const tourInfo = booking.tourInfo || booking.tripDetails || '';
+
+                tableRows += `
+                    <tr>
+                        <td style="text-align:center;">${index + 1}</td>
+                        <td><strong>${name}</strong></td>
+                        <td>${phone}</td>
+                        <td>${booking.dob || ''}</td>
+                        <td>${booking.idCard || ''}</td>
+                        <td>${trip}</td>
+                        <td>${tourInfo}</td>
+                    </tr>
+                `;
+            });
+
+            const subtitleText = filterPendingValue === 'all' ? 'كل الرحلات والوجهات (في الانتظار)' : `طلبات رحلة وجهة: ${filterPendingValue} (في الانتظار)`;
+
+           printWindow.document.write(`
+               <html>
+               <head>
+                   <title>بيان الحجوزات في الانتظار - ${filterPendingValue}</title>
+                   <style>
+                       body { font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; padding: 30px; color: #2d3748; }
+                       .header-print { text-align: center; margin-bottom: 30px; border-bottom: 3px double #e88121; padding-bottom: 15px; }
+                       .header-print h1 { color: #0b3c5d; margin: 0; font-size: 28px; }
+                       .header-print p { color: #e88121; font-weight: bold; margin: 5px 0 0 0; font-size: 16px; }
+                       table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                       th, td { border: 1px solid #cbd5e0; padding: 12px 10px; font-size: 14px; }
+                       th { background-color: #f7fafc; color: #0b3c5d; font-weight: bold; }
+                       tr:nth-child(even) { background-color: #f8fafc; }
+                       .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #718096; border-top: 1px dashed #cbd5e0; padding-top: 15px; }
+                   </style>
+               </head>
+               <body>
+                   <div class="header-print">
+                       <h1>Costa Voyages</h1>
+                       <p>كشف طلبات الحجز المبدئية والانتظار (${subtitleText})</p>
+                   </div>
+                   <table>
+                       <thead>
+                           <tr>
+                               <th style="width: 40px;">#</th>
+                               <th>اسم العميل</th>
+                               <th>رقم الهاتف</th>
+                               <th>تاريخ الميلاد</th>
+                               <th>رقم بطاقة التعريف</th>
+                               <th>الرحلة المطلوبة</th>
+                               <th>تفاصيل الوجهة التاريخ والمدة</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           ${tableRows}
+                       </tbody>
+                   </table>
+                   <div class="footer">تم استخراج هذا البيان المخصص تلقائياً من لوحة تحكم Costa Voyages</div>
+               </body>
+                </html>
+            `);
+           printWindow.document.close();
+           printWindow.print();
+        }
+
+        function printFilteredConfirmedBookings() {
+            const confirmedBookings = JSON.parse(localStorage.getItem('confirmedBookings')) || [];
+            const filterValue = document.getElementById('tour-filter-dropdown').value;
+            
+            const filteredList = confirmedBookings.filter(booking => {
+                if (filterValue === 'all') return true;
+                const tripTitle = booking.trip || booking.tour || booking.tourTitle || booking.title || '';
+                return tripTitle === filterValue;
+            });
+
+            if(filteredList.length === 0) {
+                alert("لا توجد أي حجوزات مؤكدة في القائمة المحددة لطباعتها!");
+                return;
+            }
+ 
+            const printWindow = window.open('', '_blank');
+            let tableRows = '';
+            
+            filteredList.forEach((booking, index) => {
+                tableRows += `
+                    <tr>
+                        <td style="text-align:center;">${index + 1}</td>
+                        <td><strong>${booking.name}</strong></td>
+                        <td>${booking.phone}</td>
+                        <td>${booking.dob}</td>
+                        <td>${booking.idCard}</td>
+                        <td>${booking.trip}</td>
+                        <td>${booking.tourInfo}</td>
+                    </tr>
+                `;
+            });
+
+            const subtitleText = filterValue === 'all' ? 'كل الرحلات والوجهات المدرجة' : `رحلة وجهة: ${filterValue}`;
+
+           printWindow.document.write(`
+               <html>
+               <head>
+                   <title>بيان الحجوزات - ${filterValue}</title>
+                   <style>
+                       body { font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; padding: 30px; color: #2d3748; }
+                       .header-print { text-align: center; margin-bottom: 30px; border-bottom: 3px double #0b3c5d; padding-bottom: 15px; }
+                       .header-print h1 { color: #0b3c5d; margin: 0; font-size: 28px; }
+                       .header-print p { color: #e88121; font-weight: bold; margin: 5px 0 0 0; font-size: 16px; }
+                       table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                       th, td { border: 1px solid #cbd5e0; padding: 12px 10px; font-size: 14px; }
+                       th { background-color: #f7fafc; color: #0b3c5d; font-weight: bold; }
+                       tr:nth-child(even) { background-color: #f8fafc; }
+                       .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #718096; border-top: 1px dashed #cbd5e0; padding-top: 15px; }
+                   </style>
+               </head>
+               <body>
+                   <div class="header-print">
+                       <h1>Costa Voyages</h1>
+                       <p>الكشف النهائي للمسافرين والمؤكدين (${subtitleText})</p>
+                   </div>
+                   <table>
+                       <thead>
+                           <tr>
+                               <th style="width: 40px;">#</th>
+                               <th>اسم العميل</th>
+                               <th>رقم الهاتف</th>
+                               <th>تاريخ الميلاد</th>
+                               <th>رقم بطاقة التعريف</th>
+                               <th>الرحلة</th>
+                               <th>تفاصيل الوجهة التاريخ والمدة</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           ${tableRows}
+                       </tbody>
+                   </table>
+                   <div class="footer">تم استخراج هذا البيان المخصص تلقائياً من لوحة تحكم Costa Voyages</div>
+               </body>
+                </html>
+            `);
+           printWindow.document.close();
+           printWindow.print();
+        }
+    </script>
+</body>
+</html>
